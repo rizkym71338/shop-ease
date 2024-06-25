@@ -1,4 +1,4 @@
-import { NotFoundError } from './error'
+import { NotFoundError } from '@/libs/error'
 
 export class SuccessResponse extends Response {
   constructor(data: any) {
@@ -8,10 +8,6 @@ export class SuccessResponse extends Response {
 
 export class ErrorResponse extends Response {
   constructor(error: any) {
-    if (error instanceof NotFoundError) {
-      super(error.message, { status: 404 })
-    } else {
-      super(error.message, { status: 500 })
-    }
+    super(error.message, { status: error instanceof NotFoundError ? 404 : 500 })
   }
 }

@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   useEffect(() => {
     const fetch = async () => {
       const response = await fetcher(`/api/users/${user?.id}`)
-      if (response.status === 200) setSession(response.data)
+      setSession(response.status === 200 ? response.data : null)
     }
 
     user?.id && fetch()

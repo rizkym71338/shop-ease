@@ -3,10 +3,18 @@ import { Role } from '@prisma/client'
 import { prisma } from '@/libs/prisma'
 import { NotFoundError } from '@/libs/error'
 
-export class UserService {
-  static async createOrUpdate(userData: { clerkId: string; email: string; username: string; firstname: string; lastname: string; role?: Role }) {
-    if (!userData.role) userData.role = Role.member
+interface UserData {
+  clerkId: string
+  email: string
+  imageUrl: string
+  username: string
+  firstname: string
+  lastname: string
+  role?: Role
+}
 
+export class UserService {
+  static async createOrUpdate(userData: UserData) {
     const user = await prisma.user.findFirst({ where: { clerkId: userData.clerkId } })
 
     if (!user) return await prisma.user.create({ data: userData })
@@ -20,5 +28,9 @@ export class UserService {
     if (!user) throw new NotFoundError('User not found')
 
     return user
+  }
+
+  static async findMany() {
+    return await prisma.user.findMany({ orderBy: { createdAt: 'desc' } })
   }
 }
