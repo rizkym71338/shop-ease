@@ -12,7 +12,7 @@ export const useFetch = <T>({ path, initialData }: UseFetchProps<T>) => {
   const fetchData = useCallback(async () => {
     const response = await fetcher(path)
     setData(response.status === 200 ? response.data : initialData)
-  }, [path])
+  }, [initialData, path])
 
   useEffect(() => {
     fetchData()
